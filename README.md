@@ -11,8 +11,23 @@ Intended only for hobbyist and educational purposes. Not affiliated with Luminat
 Here's a full example of drawing some graphics on a sign:
 
 ```rust
+use flipdot::{Address, SignType};
+use flipdot_graphics::{FlipdotDisplay, VIRTUAL_SIGN};
+
+use embedded_graphics::{
+    mono_font::{ascii::FONT_5X7, MonoTextStyle},
+    pixelcolor::BinaryColor,
+    prelude::*,
+    primitives::{Circle, PrimitiveStyle, Triangle},
+    text::Text,
+};
+
 // Connect to a sign with a given address and type over serial.
-let mut display = FlipdotDisplay::try_new("/dev/ttyUSB0", Address(3), SignType::Max3000Side90x7)?;
+let mut display = FlipdotDisplay::try_new(
+    "/dev/ttyUSB0",
+    Address(3),
+    SignType::Max3000Side90x7
+)?;
 
 // Draw a circle and a triangle.
 Circle::new(Point::new(2, 0), 7)
