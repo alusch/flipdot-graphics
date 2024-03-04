@@ -11,8 +11,7 @@ Intended only for hobbyist and educational purposes. Not affiliated with Luminat
 Here's a full example of drawing some graphics on a sign:
 
 ```rust
-use flipdot::{Address, SignType};
-use flipdot_graphics::{FlipdotDisplay, VIRTUAL_SIGN};
+use flipdot_graphics::{Address, FlipdotDisplay, SignType};
 
 use embedded_graphics::{
     mono_font::{ascii::FONT_5X7, MonoTextStyle},

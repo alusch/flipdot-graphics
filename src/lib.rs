@@ -17,3 +17,5 @@
 mod flipdot_display;
 
 pub use self::flipdot_display::{FlipdotDisplay, VIRTUAL_SIGN};
+
+pub use flipdot::{Address, SignType};
