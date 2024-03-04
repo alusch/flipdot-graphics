@@ -1,0 +1,23 @@
+[package]
+name = "flipdot-graphics"
+version = "0.1.0" # remember to update html_root_url
+authors = ["Adam Lusch <alusch@gmail.com>"]
+description = "An implementation of the embedded-graphics DrawTarget trait using the flipdot crate"
+license = "MIT"
+documentation = "https://docs.rs/flipdot-graphics"
+repository = "https://github.com/alusch/flipdot-graphics"
+readme = "README.md"
+keywords = ["flip-dot", "Luminator", "bus", "sign", "RS-485"]
+categories = ["hardware-support"]
+edition = "2021"
+
+[dependencies]
+embedded-graphics-core = "0.4.0"
+serial = "0.4.0"
+
+flipdot = "0.7.1"
+flipdot-testing = "0.7.1"
+
+[dev-dependencies]
+embedded-graphics = "0.8.1"
+env_logger = "0.11.2"
