@@ -7,7 +7,7 @@ license = "MIT"
 documentation = "https://docs.rs/flipdot-graphics"
 repository = "https://github.com/alusch/flipdot-graphics"
 readme = "README.md"
-keywords = ["flip-dot", "Luminator", "bus", "sign", "RS-485", "graphics"]
+keywords = ["flip-dot", "Luminator", "bus", "sign", "graphics"]
 categories = ["hardware-support"]
 edition = "2024"
 
