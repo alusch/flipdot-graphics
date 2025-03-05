@@ -1,8 +1,13 @@
 # flipdot-graphics
 
 [![Build status](https://github.com/alusch/flipdot-graphics/workflows/build/badge.svg)](https://github.com/alusch/flipdot-graphics/actions)
+[![Crates.io](https://img.shields.io/crates/v/flipdot-graphics.svg?logo=rust)](https://crates.io/crates/flipdot-graphics)
+[![Docs.rs](https://img.shields.io/docsrs/flipdot-graphics.svg?logo=docs.rs)](https://docs.rs/flipdot-graphics)
 
-An implementation of the [`embedded-graphics` `DrawTarget`] trait using the [`flipdot`] crate.
+An implementation of the [`embedded-graphics::DrawTarget`] trait using the [`flipdot`] crate to provide an easy way to send text and graphics to Luminator flip-dot and LED signs over RS-485.
+
+Tested with a MAX3000 90 × 7 side sign. Should work with any flip-dot or LED sign that uses the 7-pin circular
+connector, but no guarantees.
 
 Intended only for hobbyist and educational purposes. Not affiliated with Luminator in any way.
 
@@ -56,6 +61,6 @@ display.flush()?;
 
 Distributed under the [MIT license].
 
-[`embedded-graphics` `DrawTarget`]: https://docs.rs/embedded-graphics-core/latest/embedded_graphics_core/draw_target/trait.DrawTarget.html
+[`embedded-graphics::DrawTarget`]: https://docs.rs/embedded-graphics-core/latest/embedded_graphics_core/draw_target/trait.DrawTarget.html
 [`flipdot`]: https://github.com/alusch/flipdot
 [MIT license]: /LICENSE

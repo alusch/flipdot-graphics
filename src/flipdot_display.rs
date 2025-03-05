@@ -11,11 +11,11 @@ use flipdot_testing::{VirtualSign, VirtualSignBus};
 
 /// A [`DrawTarget`] implementation to easily draw graphics to a Luminator sign.
 ///
+/// Drawing results are buffered and only sent to the sign when [`flush`](Self::flush) is called.
+///
 /// # Examples
 ///
 /// ```no_run
-/// use flipdot_graphics::{Address, FlipdotDisplay, SignBusType, SignType};
-///
 /// use embedded_graphics::{
 ///     mono_font::{MonoTextStyle, ascii::FONT_5X7},
 ///     pixelcolor::BinaryColor,
@@ -23,6 +23,7 @@ use flipdot_testing::{VirtualSign, VirtualSignBus};
 ///     primitives::{Circle, PrimitiveStyle, Triangle},
 ///     text::{Baseline, Text},
 /// };
+/// use flipdot_graphics::{Address, FlipdotDisplay, SignBusType, SignType};
 ///
 /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
 /// #
@@ -138,11 +139,50 @@ impl FlipdotDisplay {
         Ok(Self::new_with_bus(bus, address, sign_type))
     }
 
+    /// Alternative constructor if you need access to the underlying [`SignBus`], perhaps because you want to draw to
+    /// multiple signs on the same bus, want to inspect a [`VirtualSignBus`] for tests, etc.
+    ///
+    /// For the common case where you only want to draw to a single sign, [`try_new`](Self::try_new) is simpler.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use std::{cell::RefCell, iter, rc::Rc};
+    ///
+    /// use embedded_graphics::{
+    ///     pixelcolor::BinaryColor,
+    ///     prelude::*,
+    /// };
+    /// use flipdot::PageFlipStyle;
+    /// use flipdot_graphics::{Address, FlipdotDisplay, SignBusType, SignType};
+    /// use flipdot_testing::{VirtualSign, VirtualSignBus};
+    ///
+    /// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+    /// #
+    /// // Set up bus
+    /// let bus = VirtualSignBus::new(iter::once(VirtualSign::new(Address(3), PageFlipStyle::Manual)));
+    /// let bus = Rc::new(RefCell::new(bus));
+    ///
+    /// let mut display = FlipdotDisplay::new_with_bus(
+    ///     bus.clone(),
+    ///     Address(3),
+    ///     SignType::Max3000Side90x7
+    /// );
+    ///
+    /// // Draw to the display
+    /// display.draw_iter([Pixel(Point::new(0, 0), BinaryColor::On)])?;
+    /// display.flush()?;
+    ///
+    /// // Show the page sent to the sign
+    /// println!("Got page:\n{}", bus.borrow().sign(0).pages()[0]);
+    /// #
+    /// # Ok(()) }
+    /// ```
     pub fn new_with_bus(bus: Rc<RefCell<dyn SignBus>>, address: Address, sign_type: SignType) -> Self {
         Sign::new(bus, address, sign_type).into()
     }
 
-    /// Updates the display from the framebuffer.
+    /// Sends all pending changes since the last flush to the sign.
     pub fn flush(&self) -> Result<(), SignError> {
         self.sign.configure_if_needed()?;
 
@@ -229,7 +269,7 @@ mod tests {
     }
 
     #[test]
-    fn draw() -> Result<(), Box<dyn Error>> {
+    fn draw_and_flush() -> Result<(), Box<dyn Error>> {
         let bus = VirtualSignBus::new(iter::once(VirtualSign::new(Address(3), PageFlipStyle::Manual)));
         let bus = Rc::new(RefCell::new(bus));
         let mut display = FlipdotDisplay::new_with_bus(bus.clone(), Address(3), SignType::Max3000Side90x7);
@@ -238,8 +278,13 @@ mod tests {
             .into_styled(PrimitiveStyle::with_fill(BinaryColor::On))
             .draw(&mut display)?;
 
+        // Ensure nothing has been sent to the sign yet.
+        assert!(bus.borrow().sign(0).pages().is_empty());
+
         display.flush()?;
 
+        // Now verify that we have a triangle.
+        assert!(!bus.borrow().sign(0).pages().is_empty());
         let actual = format!("{}", bus.borrow().sign(0).pages()[0]);
         let expected = "\
             +------------------------------------------------------------------------------------------+\n\

@@ -1,7 +1,5 @@
 use std::error::Error;
 
-use flipdot_graphics::{Address, FlipdotDisplay, SignBusType, SignType};
-
 use embedded_graphics::{
     mono_font::{MonoTextStyle, ascii::FONT_5X7},
     pixelcolor::BinaryColor,
@@ -9,6 +7,7 @@ use embedded_graphics::{
     primitives::{Circle, PrimitiveStyle, Triangle},
     text::{Baseline, Text},
 };
+use flipdot_graphics::{Address, FlipdotDisplay, SignBusType, SignType};
 
 fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
