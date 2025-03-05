@@ -3,7 +3,7 @@ use std::error::Error;
 use flipdot_graphics::{Address, FlipdotDisplay, SignType, VIRTUAL_SIGN};
 
 use embedded_graphics::{
-    mono_font::{ascii::FONT_5X7, MonoTextStyle},
+    mono_font::{MonoTextStyle, ascii::FONT_5X7},
     pixelcolor::BinaryColor,
     prelude::*,
     primitives::{Circle, PrimitiveStyle, Triangle},

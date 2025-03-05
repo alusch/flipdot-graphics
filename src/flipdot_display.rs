@@ -1,10 +1,10 @@
 use std::{cell::RefCell, ffi::OsStr, iter, rc::Rc};
 
 use embedded_graphics_core::{
+    Pixel,
     draw_target::DrawTarget,
     geometry::{OriginDimensions, Size},
     pixelcolor::BinaryColor,
-    Pixel,
 };
 use flipdot::{Address, Page, PageFlipStyle, PageId, SerialSignBus, Sign, SignBus, SignError, SignType};
 use flipdot_testing::{VirtualSign, VirtualSignBus};
@@ -38,7 +38,7 @@ impl FlipdotDisplay {
     pub fn flush(&self) -> Result<(), SignError> {
         self.sign.configure_if_needed()?;
 
-        if self.sign.send_pages(std::iter::once(&self.page))? == PageFlipStyle::Manual {
+        if self.sign.send_pages(iter::once(&self.page))? == PageFlipStyle::Manual {
             self.sign.show_loaded_page()?;
         }
 
