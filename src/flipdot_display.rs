@@ -212,10 +212,12 @@ mod tests {
         let mut display = FlipdotDisplay::new_with_bus(bus.clone(), Address(3), SignType::Max3000Side90x7);
 
         // Writing out of bounds shouldn't fail or panic
-        display.draw_iter(iter::once(Pixel(Point::new(-1, 0), BinaryColor::On)))?;
-        display.draw_iter(iter::once(Pixel(Point::new(0, -1), BinaryColor::On)))?;
-        display.draw_iter(iter::once(Pixel(Point::new(90, 0), BinaryColor::On)))?;
-        display.draw_iter(iter::once(Pixel(Point::new(0, 7), BinaryColor::On)))?;
+        display.draw_iter([
+            Pixel(Point::new(-1, 0), BinaryColor::On),
+            Pixel(Point::new(0, -1), BinaryColor::On),
+            Pixel(Point::new(90, 0), BinaryColor::On),
+            Pixel(Point::new(0, 7), BinaryColor::On),
+        ])?;
         display.flush()?;
 
         // And should result in an empty page
