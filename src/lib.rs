@@ -7,7 +7,7 @@
     unsafe_code
 )]
 #![warn(
-    //missing_docs,
+    missing_docs,
     unused_extern_crates,
     unused_import_braces,
     unused_qualifications,
@@ -16,6 +16,6 @@
 
 mod flipdot_display;
 
-pub use self::flipdot_display::{FlipdotDisplay, VIRTUAL_SIGN};
+pub use self::flipdot_display::{FlipdotDisplay, SignBusType};
 
 pub use flipdot::{Address, SignType};
